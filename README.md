@@ -54,14 +54,16 @@ to limited state-level data availability in the source dataset for other years.
 
 ## Dashboard Screenshots
 
+## Dashboard Screenshots
+
 ### Page 1 — Executive Overview
-![Page 1](screenshots/04_pbi_page1.png)
+![Page 1](screenshots/01_pbi_page1.png)
 
 ### Page 2 — Dropout Analysis
-![Page 2](screenshots/05_pbi_page2.png)
+![Page 2](screenshots/02_pbi_page1.png)
 
 ### Page 3 — Education vs Employment
-![Page 3](screenshots/06_pbi_page3.png)
+![Page 3](screenshots/03_pbi_page1.png)
 
 ## EDA Plots
 
