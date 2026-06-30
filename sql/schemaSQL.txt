@@ -1,0 +1,122 @@
+-- =============================================
+-- India Education Employment Gap Analysis
+-- Database Schema
+-- Author: Sahil
+-- =============================================
+
+USE master;
+GO
+
+CREATE DATABASE IndiaEducationDB;
+GO
+
+USE IndiaEducationDB;
+GO
+
+-- =============================================
+-- Table 1: dropout_rates
+-- Description: State-wise school dropout rates
+-- at Primary, Upper Primary, Secondary and
+-- Higher Secondary levels, split by gender.
+-- Source: Kaggle - Indian Student State-wise
+-- Dropout Rate dataset
+-- Years covered: 2012-13 to 2014-15
+-- Total rows: 110
+-- =============================================
+CREATE TABLE dropout_rates (
+    State_UT                VARCHAR(50),
+    year                     VARCHAR(20),
+    Primary_Boys             FLOAT,
+    Primary_Girls            FLOAT,
+    Primary_Total            FLOAT,
+    [Upper Primary_Boys]     FLOAT,
+    [Upper Primary_Girls]    FLOAT,
+    [Upper Primary_Total]    FLOAT,
+    [Secondary _Boys]        FLOAT,
+    [Secondary _Girls]       FLOAT,
+    [Secondary _Total]       FLOAT,
+    HrSecondary_Boys         FLOAT,
+    HrSecondary_Girls        FLOAT,
+    HrSecondary_Total        FLOAT
+);
+GO
+
+-- =============================================
+-- Table 2: state_indicators
+-- Description: State-wise literacy, unemployment,
+-- poverty, income, population and sex ratio data
+-- for years 2001 and 2011.
+-- Source: Kaggle - India Census Key Indicators
+-- Note: literacy_2011 values cross-validated and
+-- corrected for 8 states using Census 2011 data
+-- Total rows: 32
+-- =============================================
+CREATE TABLE state_indicators (
+    state                VARCHAR(50),
+    income_2001          INT,
+    income_2011          INT,
+    literacy_2001        FLOAT,
+    literacy_2011        FLOAT,
+    population_2001      INT,
+    population_2011      INT,
+    sex_ratio_2001       INT,
+    sex_ratio_2011       INT,
+    unemployment_2001    INT,
+    unemployment_2011    INT,
+    poverty_2001         FLOAT,
+    poverty_2011         FLOAT,
+    category              VARCHAR(50)
+);
+GO
+
+-- =============================================
+-- Table 3: education_stats
+-- Description: State-wise school infrastructure
+-- data - population, literacy by gender, school
+-- enrollment, total schools, total teachers.
+-- Source: AISHE (All India Survey on Higher
+-- Education) - reduced from 816 columns to 11
+-- key columns relevant to this analysis.
+-- Total rows: 36
+-- =============================================
+CREATE TABLE education_stats (
+    year                  VARCHAR(20),
+    state                 VARCHAR(50),
+    total_population      INT,
+    overall_literacy      FLOAT,
+    female_literacy       FLOAT,
+    male_literacy         FLOAT,
+    total_enrollment      INT,
+    girl_enrollment       INT,
+    private_enrollment    INT,
+    total_schools         INT,
+    total_teachers        INT
+);
+GO
+
+-- =============================================
+-- Indexes for query performance
+-- =============================================
+CREATE INDEX idx_dropout_state    ON dropout_rates(State_UT);
+CREATE INDEX idx_indicators_state ON state_indicators(state);
+CREATE INDEX idx_education_state  ON education_stats(state);
+GO
+
+-- =============================================
+-- Data Cleaning Notes:
+-- 1. dropout_rates: Original CSV had 'NR' (Not
+--    Reported) values and a leaked header value
+--    in Upper Primary_Boys column. Converted to
+--    NaN using pd.to_numeric(errors='coerce'),
+--    then imputed with column median.
+-- 2. state_indicators: literacy_2011 values for
+--    8 states (Kerala, Maharashtra, Bihar,
+--    Rajasthan, Mizoram, Tripura, Goa, Himachal
+--    Pradesh) were incorrect in source dataset.
+--    Manually corrected using Census 2011
+--    official figures.
+-- 3. education_stats: Original dataset had 816
+--    columns (AISHE district summary format).
+--    Reduced to 11 relevant columns for this
+--    analysis.
+-- =============================================
